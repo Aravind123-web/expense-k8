@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: mysql
+  namespace: expense
   # These labels are deployemnt related labesl
   labels:
     component: mysql
@@ -25,6 +26,6 @@ spec:
     spec:
       containers:
         - name: mysql
-          image: mysql:8.0
+          image: aravind19981999/mysql-db:v1.0
           ports:
             - containerPort: 3306
