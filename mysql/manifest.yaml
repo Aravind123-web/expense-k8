@@ -27,5 +27,19 @@ spec:
       containers:
         - name: mysql
           image: aravind19981999/mysql-db:v1.0
-          ports:
-            - containerPort: 3306
+          
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql
+  namespace: expense
+spec:
+  selector:
+    component: mysql
+    project: expense
+    tier: database
+  ports:
+    - protocol: TCP
+      port: 3306 # service port
+      targetPort: 3306 # target port on the pod
