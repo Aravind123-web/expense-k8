@@ -1,3 +1,4 @@
+# configmap
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -7,6 +8,7 @@ data:
   DB_HOST: mysql # mysql component service name
 
 ---
+# deployment
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -36,11 +38,19 @@ spec:
       containers:
         - name: backend
           image: aravind19981999/expense-backend:v1.0
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+            limits:
+              memory: "256Mi"
+              cpu: "150m"
           envFrom:
           - configMapRef:
                name: backend
           
 ---
+# clusterIP service for backend component
 apiVersion: v1
 kind: Service
 metadata:
