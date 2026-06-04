@@ -6,7 +6,6 @@ metadata:
   namespace: expense
 data:
   DB_HOST: mysql # mysql component service name
-
 ---
 # deployment
 apiVersion: apps/v1
@@ -35,6 +34,10 @@ spec:
          project: expense
          tier: app
     spec:
+      init containers:
+        - name: init-myservice
+          image: busybox
+          command: ['sh', '-c', "until nslookup mysql; do echo waiting for mysql; sleep 2; done;"]
       containers:
         - name: backend
           image: aravind19981999/expense-backend:v1.0
