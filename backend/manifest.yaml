@@ -37,7 +37,11 @@ spec:
       initContainers:
         - name: init-myservice
           image: busybox
-          command: ['sh', '-c', "until nslookup mysql; do echo waiting for mysql; sleep 2; done;"]
+          command: 
+             until nslookup mysql.expense.svc.cluster.local;
+             do echo "waiting for mysql";
+             sleep 2;
+             done
       containers:
         - name: backend
           image: aravind19981999/expense-backend:v1.0
