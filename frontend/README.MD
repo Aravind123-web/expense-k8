@@ -57,6 +57,45 @@ Check node resource utilization:
 kubectl top node
 ```
 
+
+### Step 5: Create and Deploy the HPA Configuration
+
+Create an HPA YAML file under the `frontend` directory.
+
+In the HPA configuration:
+
+- Set the frontend deployment name in `scaleTargetRef`.
+- Set `minReplicas` to `1`.
+- Set `maxReplicas` to `20`.
+- Configure CPU utilization with `averageUtilization: 50`.
+
+### Deploy the HPA
+
+```bash
+kubectl apply -f frontend/hpa.yaml
+```
+
+### Verify HPA
+
+Check whether the HPA has been created successfully:
+
+```bash
+kubectl get hpa
+```
+
+View detailed HPA information:
+
+```bash
+kubectl describe hpa frontend
+```
+
+Monitor the current number of replicas and CPU utilization:
+
+```bash
+kubectl get hpa -w
+```
+
+
 ## Notes
 
 - Metrics Server must be installed and running before configuring HPA.
@@ -66,3 +105,10 @@ kubectl top node
   1. MySQL
   2. Backend
   3. Frontend
+- Ensure that the Metrics Server is installed and running before creating the HPA.
+- The frontend deployment must have CPU resource requests and limits defined; otherwise, HPA cannot calculate CPU utilization correctly.
+- HPA monitors the average CPU utilization of frontend pods.
+- When the average CPU utilization exceeds **50%**, Kubernetes automatically scales out the deployment by increasing the number of replicas.
+- When CPU utilization decreases, Kubernetes scales in the deployment by reducing the number of replicas.
+- The number of replicas will always remain between **1** (`minReplicas`) and **20** (`maxReplicas`).
+- Use `kubectl top pod` to verify that metrics are being collected correctly.
